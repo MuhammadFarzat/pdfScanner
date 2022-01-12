@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div class="loader" id = "loader">
+        <img src="loading.gif">
+    </div>
+    Enter the name of the file.</br>
+    Save your Pdf file in the directory "dateien".</br>
+    Make sure the name isn't repeated because the programm isn't made to handle that yet.</br>
+    <input type="text" oninput="dateiSuchen()" id="scannID" >
+
+    <iframe id="myFrame" style="display:none" width="500" height="300"></iframe>
+</body>
+</html>

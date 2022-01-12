@@ -1,0 +1,21 @@
+[11-Jan-2022 16:28:35 America/Boise] PHP Warning:  include(../vendor/autoload.php): failed to open stream: No such file or directory in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:28:35 America/Boise] PHP Warning:  include(../vendor/autoload.php): failed to open stream: No such file or directory in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:28:35 America/Boise] PHP Warning:  include(): Failed opening '../vendor/autoload.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:28:35 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Smalot\PdfParser\Parser' not found in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php:5
+Stack trace:
+#0 {main}
+  thrown in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 5
+[11-Jan-2022 16:30:17 America/Boise] PHP Warning:  include(../vendor/autoload.php): failed to open stream: No such file or directory in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:30:17 America/Boise] PHP Warning:  include(../vendor/autoload.php): failed to open stream: No such file or directory in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:30:17 America/Boise] PHP Warning:  include(): Failed opening '../vendor/autoload.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:30:17 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Smalot\PdfParser\Parser' not found in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php:5
+Stack trace:
+#0 {main}
+  thrown in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 5
+[11-Jan-2022 16:31:02 America/Boise] PHP Warning:  include(../vendor/autoload.php): failed to open stream: No such file or directory in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:31:02 America/Boise] PHP Warning:  include(../vendor/autoload.php): failed to open stream: No such file or directory in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:31:02 America/Boise] PHP Warning:  include(): Failed opening '../vendor/autoload.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 2
+[11-Jan-2022 16:31:02 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Smalot\PdfParser\Parser' not found in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php:5
+Stack trace:
+#0 {main}
+  thrown in /home2/icgtiwmy/public_html/shop/TestDirectory/php/dateisuchen.php on line 5
