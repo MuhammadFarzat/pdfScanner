@@ -7,7 +7,7 @@ function dateienEmpfangen(artikelNummer)
 
     document.getElementById('loader').style.display = "flex";
         $.ajax({
-            url: "http://localhost/Test2211/php/dateisuchen.php",
+            url: "./php/dateisuchen.php",
             type: "POST",
             data: data,
             success: function(response)
@@ -27,7 +27,7 @@ function getAllFiles(artikelNummer)
 
     $.ajax({
         //Sends request to dateisuchen.php to search and return text of the wanted php file
-        url: "http://localhost/pdfScanner-main/php/dateisuchen.php",
+        url: "./php/dateisuchen.php",
         type: "POST",
         data: data,
         success: function(response)
@@ -48,7 +48,7 @@ function getWantedFile(artikelNummer)
 
     $.ajax({
         //Sends request to dateisuchen.php to search and return text of the wanted php file
-        url: "http://localhost/pdfScanner-main/php/dateisuchen.php",
+        url: "./php/dateisuchen.php",
         type: "POST",
         data: data,
         success: function(response)
@@ -58,6 +58,7 @@ function getWantedFile(artikelNummer)
         }
     });
 }
+
 //Gives us the requested file
 function dateiSuchen() {
 
@@ -66,7 +67,7 @@ function dateiSuchen() {
         var artikelNummer = document.getElementById('scannID').value;
 
         var data = {};
-        const fileUrl = "http://localhost/pdfScanner/Umpackanweisungen/";
+        const fileUrl = "./Umpackanweisungen/";
 
         data["artikelNummer"] = artikelNummer;
         //Is for the loading logo
@@ -74,7 +75,7 @@ function dateiSuchen() {
 
         $.ajax({
             //Sends request to dateisuchen.php to search and return text of the wanted php file
-            url: "http://localhost/pdfScanner/php/dateisuchen.php",
+            url: "./php/dateisuchen.php",
             type: "POST",
             data: data,
             success: function(response)
@@ -87,8 +88,11 @@ function dateiSuchen() {
                 }
                 else
                 {
+                    let fName = response; 
                     document.getElementById('myFrame').src = fileUrl + response;
                     document.getElementById('myFrame').style.display = "flex";
+                    document.getElementById('scannID').placeholder  = fName.substring(fName.length - 4 , 0);
+                    document.getElementById('dateiName').innerHTML = fName.substring(fName.length - 4 , 0);
                 }
             }
         });
