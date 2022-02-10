@@ -6,3 +6,6 @@
 4. make sure that the name of the file is at least 10 characters long.
 5. The text will be displayed in the console
 6. That's it enjoy reading your pdf file
+
+
+![image](https://user-images.githubusercontent.com/24265145/153430922-8a9e1c2e-6eeb-4890-8166-28f79d72cc8c.png)
