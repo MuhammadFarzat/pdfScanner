@@ -17,6 +17,7 @@
         {
             $anzahlCharsZuBeachten = 8;
         }
+
         if(strlen($_POST['artikelNummer']) >= $anzahlCharsZuBeachten)
         {
             //runs code to see if the requested file is unique of if there are many files, that have the same name
@@ -53,26 +54,17 @@
 
                 while($charPosition < $positionVonUnterstrich-$endPosition)
                 {
-                    if(is_numeric(substr($file, $charPosition, 1)) != 1)
+                    if(is_numeric(substr($file, $charPosition, 1)) == 0)
                     {
                         $fileNameKopie = $file;
-                        $file = substr_replace($file, null, $charPosition, 1);
+                        $file = substr_replace($file, "", $charPosition, 1);
                         $filesOriginaleName[$file] = $fileNameKopie;
                         break;
                     }
 
                     $charPosition++;
                 }
-                
-                /*if(strpos($file, $artikelNummer) !== false)
-                {
-                    if(substr($file, strlen($artikelNummer), 1) == "_")
-                    {
-                        echo json_encode($filesOriginaleName[$file]);
-                        $eineDateiGefunden = true;
-                        break;
-                    }
-                }*/
+
             }
 
             //$fileName ist mit Buchstabe und $key ist ohne
@@ -80,7 +72,8 @@
                 if(strpos($fileName, $artikelNummer) !== false || strpos($key, $artikelNummer) !== false)
                 {
                     
-                    $filesZumSenden[$key] = $fileName;
+                    $filesZumSenden[$key] = [];
+                    array_push($filesZumSenden[$key], $fileName);
                     $eineDateiGefunden = true;
                     
                 }
@@ -92,15 +85,16 @@
             }
             else
             {
-                if(count($filesZumSenden) == 1)
+                foreach($filesZumSenden as $key => $value)
                 {
                     //$pdf = $parser->parseFile($filesZumSenden[0]);
-                    $document = $parser->parseFile($path."/".array_values($filesZumSenden)[0]);
+                    $document = $parser->parseFile($path."/".array_values($value)[0]);
                     $content  = nl2br($document->getText());
                     $posVomBehaelter = strpos($content, "Behälter");
                     $posVomBreak = strpos($content, "<br />", $posVomBehaelter);
                     $behaelter = substr($content, $posVomBehaelter, $posVomBreak-$posVomBehaelter);
-                    $filesZumSenden['behaelter'] = $behaelter;
+                    array_push($filesZumSenden[$key], $behaelter);
+                    // $filesZumSenden['behaelter'.$value] = $behaelter;
                 }
                 echo json_encode($filesZumSenden);
             }
