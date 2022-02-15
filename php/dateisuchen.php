@@ -83,6 +83,16 @@
         }
         else
         {
+            if(count($filesZumSenden) == 1)
+            {
+                //$pdf = $parser->parseFile($filesZumSenden[0]);
+                $document = $parser->parseFile($path."/".array_values($filesZumSenden)[0]);
+                $content  = nl2br($document->getText());
+                $posVomBehaelter = strpos($content, "Behälter");
+                $posVomBreak = strpos($content, "<br />", $posVomBehaelter);
+                $behaelter = substr($content, $posVomBehaelter, $posVomBreak-$posVomBehaelter);
+                $filesZumSenden['behaelter'] = $behaelter;
+            }
             echo json_encode($filesZumSenden);
         }
 

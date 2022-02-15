@@ -82,10 +82,10 @@ function dateiSuchen() {
             success: function(response)
             {
                 dateiNamenArray = JSON.parse(response);
-                var egal = 0;
+                var anzahlElementsImObjekt = 0;
                 for(element in dateiNamenArray)
                 {
-                    egal++;
+                    anzahlElementsImObjekt++;
                 }
 
                 //We are interested for now only in the else statement, which gives us the text
@@ -99,9 +99,10 @@ function dateiSuchen() {
                 }
                 else
                 {
-                    if(egal == 1)
+                    if(anzahlElementsImObjekt == 2)
                     {
-                        console.log(egal);
+                        console.log(anzahlElementsImObjekt);
+                        console.log(dateiNamenArray);
                         let fName = response;
                         var dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
                         document.getElementById('myFrame').src = fileUrl + dateiName;
@@ -111,7 +112,7 @@ function dateiSuchen() {
                     }
                     else
                     {
-                        console.log(egal);
+                        console.log(anzahlElementsImObjekt);
                         var dateiNamenArray2 = [];
                         for(element in dateiNamenArray)
                         {
