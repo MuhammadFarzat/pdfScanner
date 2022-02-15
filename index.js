@@ -72,27 +72,55 @@ function dateiSuchen() {
         data["artikelNummer"] = artikelNummer;
         //Is for the loading logo
 
-
+        data = JSON.parse(JSON.stringify(data));
+        var dateiNamenArray = {};
         $.ajax({
             //Sends request to dateisuchen.php to search and return text of the wanted php file
             url: "./php/dateisuchen.php",
-            type: "POST",
+            method: "POST",
             data: data,
             success: function(response)
             {
-             
+                dateiNamenArray = JSON.parse(response);
+                var egal = 0;
+                for(element in dateiNamenArray)
+                {
+                    egal++;
+                }
+
                 //We are interested for now only in the else statement, which gives us the text
-                if(response == "nichts")
+                if(response.includes("nichts"))
                 {
                     console.log(response);
+                    document.getElementById('myFrame').src = "";
+                    document.getElementById('myFrame').style.display = "none";
+                    document.getElementById('scannID').placeholder  = "Artikelnummer";
+                    document.getElementById('dateiName').innerHTML = "Keine Dateien gefunden";
                 }
                 else
                 {
-                    let fName = response; 
-                    document.getElementById('myFrame').src = fileUrl + response;
-                    document.getElementById('myFrame').style.display = "flex";
-                    document.getElementById('scannID').placeholder  = fName.substring(fName.length - 4 , 0);
-                    document.getElementById('dateiName').innerHTML = fName.substring(fName.length - 4 , 0);
+                    if(egal == 1)
+                    {
+                        console.log(egal);
+                        let fName = response;
+                        var dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
+                        document.getElementById('myFrame').src = fileUrl + dateiName;
+                        document.getElementById('myFrame').style.display = "flex";
+                        document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
+                        document.getElementById('dateiName').innerHTML = dateiName.substring(dateiName.length - 4 , 0);
+                    }
+                    else
+                    {
+                        console.log(egal);
+                        var dateiNamenArray2 = [];
+                        for(element in dateiNamenArray)
+                        {
+                            console.log(dateiNamenArray[element]);
+                            dateiNamenArray2.push(dateiNamenArray[element] + "\n");
+                        }
+                        alert("Mehrere Dateien gefunden:\n" + dateiNamenArray2);
+                    }
+                    
                 }
             }
         });
