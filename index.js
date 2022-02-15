@@ -99,15 +99,15 @@ function dateiSuchen() {
                 }
                 else
                 {
-                    if(anzahlElementsImObjekt == 2)
+                    if(anzahlElementsImObjekt == 1)
                     {
                         console.log(anzahlElementsImObjekt);
                         console.log(dateiNamenArray);
                         let fName = response;
                         var dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
-                        document.getElementById('myFrame').src = fileUrl + dateiName;
+                        document.getElementById('myFrame').src = fileUrl + dateiName[0];
                         document.getElementById('myFrame').style.display = "flex";
-                        document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
+                        // document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
                         document.getElementById('dateiName').innerHTML = dateiName.substring(dateiName.length - 4 , 0);
                     }
                     else
