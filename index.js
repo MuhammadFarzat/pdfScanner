@@ -1,63 +1,4 @@
-//Doesn't run right now. It isn't used
-function dateienEmpfangen(artikelNummer)
-{
-    var data = {};
 
-    data["artikelNummer2"] = artikelNummer;
-
-    document.getElementById('loader').style.display = "flex";
-        $.ajax({
-            url: "./php/dateisuchen.php",
-            type: "POST",
-            data: data,
-            success: function(response)
-            {
-                document.getElementById('loader').style.display = "none";
-                alert(response);
-            }
-    });
-}
-
-function getAllFiles(artikelNummer)
-{
-    var data = {};
-
-    data["artikelNummerNr2"] = artikelNummer;
-    document.getElementById('loader').style.display = "flex";
-
-    $.ajax({
-        //Sends request to dateisuchen.php to search and return text of the wanted php file
-        url: "./php/dateisuchen.php",
-        type: "POST",
-        data: data,
-        success: function(response)
-        {
-            document.getElementById('loader').style.display = "none";
-            console.log(response);
-        }
-    });
-}
-
-function getWantedFile(artikelNummer)
-{
-    var data = {};
-
-    data["artikelNummerLast"] = artikelNummer;
-    //Is for the loading logo
-    document.getElementById('loader').style.display = "flex";
-
-    $.ajax({
-        //Sends request to dateisuchen.php to search and return text of the wanted php file
-        url: "./php/dateisuchen.php",
-        type: "POST",
-        data: data,
-        success: function(response)
-        {
-            document.getElementById('loader').style.display = "none";
-           
-        }
-    });
-}
 
 //Gives us the requested file
 function dateiSuchen() {
@@ -81,8 +22,9 @@ function dateiSuchen() {
             data: data,
             success: function(response)
             {
-                dateiNamenArray = JSON.parse(response);
-                var anzahlElementsImObjekt = 0;
+                console.log(JSON.parse(response));
+                //dateiNamenArray = JSON.parse(response);
+                /*var anzahlElementsImObjekt = 0;
                 for(element in dateiNamenArray)
                 {
                     anzahlElementsImObjekt++;
@@ -122,7 +64,7 @@ function dateiSuchen() {
                         alert("Mehrere Dateien gefunden:\n" + dateiNamenArray2);
                     }
                     
-                }
+                }*/
             }
         });
   }
