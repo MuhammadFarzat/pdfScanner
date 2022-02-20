@@ -112,8 +112,26 @@
         if($artikelNummerExistiert)
         {
             $posArtikelNummer = strpos($erste200Stellen, $artikel);
-
             if(substr($erste200Stellen, $posArtikelNummer+strlen($artikel), 1) == '-')
+            {
+                $artikelNummerExistiert = false;
+            }
+        }
+        else
+        {
+            $erste4StellenVonArtikel = substr($artikel, 0, 4);
+
+            $anfangDerArtikelnummerInDerDatei = strpos($erste200Stellen, $erste4StellenVonArtikel);
+
+            $artikelnummerInDerDateiMitNull = substr($erste200Stellen, $anfangDerArtikelnummerInDerDatei, strlen($artikel));
+
+            $artikelnummerInDerDateiMitNull = substr_replace($artikelnummerInDerDateiMitNull, "0", 4, 1);
+          
+            if(strpos($artikelnummerInDerDateiMitNull, $artikel) !== false)
+            {
+                $artikelNummerExistiert = true;
+            }
+            else
             {
                 $artikelNummerExistiert = false;
             }
