@@ -34,12 +34,16 @@
                 if(preg_match("/[a-z]/i", substr($artikelNummer, 4, 1))){
                     if(strpos($file, $artikelNummer) !== false)
                     {
-                   
-                        $filesZumSenden[$file] = [];
-                        array_push($filesZumSenden[$file], $file);
-                        array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
-                        array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
-                        break;
+                        if(substr($file, strlen($artikelNummer), 1) == "_")
+                        {
+                            
+                            $filesZumSenden[$file] = [];
+                            array_push($filesZumSenden[$file], $file);
+                            array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
+                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
+                            break;
+                        }
+                    
                     }
                 }
                 //Ansonsten ersetze die Stelle 5 bei allen Dateien mit dem Wert "0" und zeige alle betroffene Dateien
@@ -48,11 +52,13 @@
                     $fileNameMitBuchstabe = substr_replace($file, "0", 4, 1);
                     if(strpos($fileNameMitBuchstabe, $artikelNummer) !== false)
                     {
-           
-                        $filesZumSenden[$file] = [];
-                        array_push($filesZumSenden[$file], $file);
-                        array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
-                        array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
+                        if(substr($file, strlen($artikelNummer), 1) == "_")
+                        {
+                            $filesZumSenden[$file] = [];
+                            array_push($filesZumSenden[$file], $file);
+                            array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
+                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
+                        }
                     }
                 }
                 
