@@ -1,3 +1,11 @@
+// Get the modal
+const modal = document.getElementById("myModal");
+    
+// Get the button that opens the modal
+const btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+const abrechen = document.getElementsByClassName("close")[0];
 
 
 //Gives us the requested file
@@ -22,16 +30,15 @@ function dateiSuchen() {
             data: data,
             success: function(response)
             {
-                console.log(JSON.parse(response));
-                //dateiNamenArray = JSON.parse(response);
-                /*var anzahlElementsImObjekt = 0;
+                dateiNamenArray = JSON.parse(response);
+                var anzahlElementsImObjekt = 0;
                 for(element in dateiNamenArray)
                 {
                     anzahlElementsImObjekt++;
                 }
 
                 //We are interested for now only in the else statement, which gives us the text
-                if(response.includes("nichts"))
+                if(response.includes("Keine"))
                 {
                     console.log(response);
                     document.getElementById('myFrame').src = "";
@@ -61,10 +68,35 @@ function dateiSuchen() {
                             console.log(dateiNamenArray[element]);
                             dateiNamenArray2.push(dateiNamenArray[element] + "\n");
                         }
-                        alert("Mehrere Dateien gefunden:\n" + dateiNamenArray2);
+                        // alert("Mehrere Dateien gefunden:\n" + dateiNamenArray2);
+                        /* start modal */
+                             
+                        // When the user clicks the button, open the modal 
+                        modal.style.display = "block";
+                        document.getElementById('dateienAuswahl').textContent = dateiNamenArray2 + "\n";
+
+                        
+                        // When the user clicks anywhere outside of the modal, close it
+                        /*window.onclick = function(event) {
+                            if (event.target == modal) {
+                            modal.style.display = "none";
+                            }
+                        }*/
+                        /* end modal */
                     }
                     
-                }*/
+                }
             }
         });
   }
+
+
+
+ // When the user clicks on <span> (x), close the modal
+    abrechen.onclick = function () {
+    modal.style.display = "none";
+ }
+
+
+
+
