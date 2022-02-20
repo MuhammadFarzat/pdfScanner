@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="index.js"></script>
+
 </head>
 
 <body>
@@ -30,6 +30,7 @@
 
   <main class="">
     <div class="box">
+
     <div class="loader" id="loader">
       <img src="loading.gif">
     </div>
@@ -50,7 +51,26 @@
       <label for="name" class="form__label" id="dateiName">Artikelnummer</label>
     </div>
     <!-- <input type="text" oninput="dateiSuchen()" id="scannID" > -->
+
+<!-- Trigger/Open The Modal -->
+    <button id="myBtn">Open Modal</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="dateienAuswahl">Some text in the Modal..</p>
+      </div>
+
     </div>
+
+    </div>
+
+    
+    
+    
 
     <iframe id="myFrame" frameborder="0" scrolling="no" seamless="seamless"  style="display:none;" height="100%" width="100%"></iframe>
 
@@ -61,6 +81,9 @@
     <small>S.Farzat</small>
   </footer>
 
+
+
+      <script src="index.js"></script>
 </body>
 
 </html>
