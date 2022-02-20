@@ -108,6 +108,16 @@
        
         
         $artikelNummerExistiert = (strpos($erste200Stellen, $artikel) !== false) ? true : false;
+
+        if($artikelNummerExistiert)
+        {
+            $posArtikelNummer = strpos($erste200Stellen, $artikel);
+
+            if(substr($erste200Stellen, $posArtikelNummer+strlen($artikel), 1) == '-')
+            {
+                $artikelNummerExistiert = false;
+            }
+        }
         
         return $artikelNummerExistiert;
     }
