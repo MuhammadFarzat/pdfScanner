@@ -11,12 +11,15 @@ let docFrag = document.createDocumentFragment();
 
 let dateiAuswahl = document.getElementById("dateiAuswahl");
 
+let scannId = document.getElementById('scannID');
+
+
 //Gives us the requested file
 function dateiSuchen() {
 
         //If the name from the user reaches 10 chars
     
-        var artikelNummer = document.getElementById('scannID').value;
+        var artikelNummer = scannId.value;
 
         var data = {};
         const fileUrl = "./Umpackanweisungen/";
@@ -47,7 +50,7 @@ function dateiSuchen() {
                     console.log(response);
                     document.getElementById('myFrame').src = "";
                     document.getElementById('myFrame').style.display = "none";
-                    document.getElementById('scannID').placeholder  = "Artikelnummer";
+                    scannId.placeholder  = "Artikelnummer";
                     document.getElementById('dateiName').innerHTML = "Keine Dateien gefunden";
                 }
                 else

@@ -1,14 +1,3 @@
-/*main {
-  margin: 0;
-  padding: 5px;
-  background-color: lightgray;
-}
-
-main > h1, p {
-  margin: 10px;
-  padding: 5px;
-}*/
-
 html, body {
   margin: 0;
   height: 100%;
@@ -74,7 +63,7 @@ iframe {
 }
 
 .box {
-  height: 38vh;
+  height: 30vh;
   width: 100%;
   background: #0f2027;
   /* fallback for old browsers */
@@ -105,19 +94,24 @@ iframe {
 }
 
 .form__input {
-  font-family: 'Roboto', sans-serif;
+  /*font-family: 'Roboto', sans-serif;*/
+  font-family: 'Dosis', sans-serif;
   color: #333;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  font-kerning: auto;
   margin: 0 auto;
-  padding: 1.5rem 2rem;
-  border-radius: 0.2rem;
+  padding: 8px 25px;
+  border-radius: 25px;
   background-color: rgb(255, 255, 255);
   border: none;
   width: 90%;
   display: block;
   border-bottom: 0.3rem solid transparent;
   transition: all 0.3s;
+  caret-color: red;
+
 }
 
 .form__input:placeholder-shown+.form__label {
@@ -153,7 +147,7 @@ iframe {
   background-color: #fefefe;
   margin: auto;
   padding: 0;
-  border: 1px solid #888;
+  border: 1px solid #253C59;
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
@@ -190,18 +184,18 @@ iframe {
 
 .modal-header {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #2D4B73;
   color: white;
 }
 
 .modal-body {
-  padding: 2px 16px;
+  padding: 16px 2px 16px 25px !important;
   color: #333;
 }
 
 .modal-footer {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #2D4B73;
   color: white;
 }
 
@@ -210,8 +204,8 @@ iframe {
   display: block;
   width: 90%;
   border: none;
-  background-color: #04AA6D;
-  color: white;
+  background-color: #D9B70D;
+  color: #253C59;
   padding: 14px 10px;
   font-size: 16px;
   cursor: pointer;
@@ -221,7 +215,8 @@ iframe {
 }
 
 .block:hover {
-  background-color: #ddd;
+  background-color: #99B4BF;
   color: black;
+  box-shadow: 0 0 11px rgba(33,33,33,.2); 
 }
 /* end modal */
