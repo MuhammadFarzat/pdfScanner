@@ -40,7 +40,7 @@
                             $filesZumSenden[$file] = [];
                             array_push($filesZumSenden[$file], $file);
                             array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
-                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
+                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file));
                             break;
                         }
                     
@@ -57,7 +57,7 @@
                             $filesZumSenden[$file] = [];
                             array_push($filesZumSenden[$file], $file);
                             array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
-                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
+                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file));
                         }
                     }
                 }
@@ -96,10 +96,12 @@
         return $behaelter;
     }
 
-    function readDateiInhaltArtikel($fileName, $artikel)
+    function readDateiInhaltArtikel($fileName)
     {
         global $parser;
         global $path;
+
+        $artikel = substr($fileName, 0, strpos($fileName, '_'));
 
         $document = $parser->parseFile($path."/".$fileName);
         $content  = preg_replace('/\s+/', '', nl2br($document->getText()));
