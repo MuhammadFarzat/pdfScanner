@@ -62,6 +62,7 @@ function dateiSuchen() {
                 }
                 else
                 {
+                    
                     if(anzahlElementsImObjekt == 1)
                     {
                         
@@ -74,6 +75,7 @@ function dateiSuchen() {
                             alert("Datei Nr. " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
                             ` hat einen Fehler in der Benennung. Bitte informieren Sie den Administrator`);
                         }
+                        document.getElementById('dateiName').innerHTML = "Artikelnummer: " + artikelNummer;
                         document.getElementById('myFrame').src = fileUrl + dateiName[0];
                         document.getElementById('myFrame').style.display = "flex";
                         // document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
@@ -146,6 +148,7 @@ function showSelectedArtikel(event)
             if (dateiAuswahlnode.parentNode) {
                 dateiAuswahlnode.parentNode.removeChild(dateiAuswahlnode);
             }
+            document.getElementById('dateiName').innerHTML = "Artikelnummer: " + artikelNummerImButton;
         }
     }
 }
