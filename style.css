@@ -74,7 +74,7 @@ iframe {
 }
 
 .box {
-  height: 100vh;
+  height: 38vh;
   width: 100%;
   background: #0f2027;
   /* fallback for old browsers */
@@ -84,7 +84,6 @@ iframe {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
   color: #fff;
   font-family: arial;
   line-height: 1.5;
@@ -195,7 +194,10 @@ iframe {
   color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+  padding: 2px 16px;
+  color: #333;
+}
 
 .modal-footer {
   padding: 2px 16px;
@@ -206,14 +208,16 @@ iframe {
 
 .block {
   display: block;
-  width: 100%;
+  width: 90%;
   border: none;
   background-color: #04AA6D;
   color: white;
-  padding: 14px 28px;
+  padding: 14px 10px;
   font-size: 16px;
   cursor: pointer;
   text-align: center;
+  margin: 0 auto;
+  margin-bottom: 10px;
 }
 
 .block:hover {
