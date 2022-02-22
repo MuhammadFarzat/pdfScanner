@@ -1,12 +1,15 @@
 // Get the modal
-const modal = document.getElementById("myModal");
+let modal = document.getElementById("myModal");
     
 // Get the button that opens the modal
-const btn = document.getElementById("myBtn");
+let btn = document.getElementById("myBtn");
 
 // Get the <span> element that closes the modal
-const abrechen = document.getElementsByClassName("close")[0];
+let abrechen = document.getElementsByClassName("close")[0];
 
+let docFrag = document.createDocumentFragment();
+
+let dateiAuswahl = document.getElementById("dateiAuswahl");
 
 //Gives us the requested file
 function dateiSuchen() {
@@ -19,6 +22,7 @@ function dateiSuchen() {
         const fileUrl = "./Umpackanweisungen/";
 
         data["artikelNummer"] = artikelNummer;
+
         //Is for the loading logo
 
         data = JSON.parse(JSON.stringify(data));
@@ -67,13 +71,26 @@ function dateiSuchen() {
                         {
                             console.log(dateiNamenArray[element]);
                             dateiNamenArray2.push(dateiNamenArray[element] + "\n");
+                            // button
+                            let dateiAuswahlBtn = document.createElement('input');
+                            dateiAuswahlBtn.type = 'button';
+                            dateiAuswahlBtn.value = dateiNamenArray[element] ;
+                            dateiAuswahlBtn.className = 'block';
+                            dateiAuswahlBtn.id = element.trim().replaceAll(' ', '');
+                            docFrag.appendChild(dateiAuswahlBtn);
                         }
-                        // alert("Mehrere Dateien gefunden:\n" + dateiNamenArray2);
+                        let div = document.createElement('div');
+                        div.id = 'dateiAuswahlnode';
+                        div.appendChild(docFrag)
+                        dateiAuswahl.appendChild(div);
+
                         /* start modal */
                              
                         // When the user clicks the button, open the modal 
                         modal.style.display = "block";
                         document.getElementById('dateienAuswahl').textContent = dateiNamenArray2 + "\n";
+
+                        
 
                         
                         // When the user clicks anywhere outside of the modal, close it
@@ -92,11 +109,18 @@ function dateiSuchen() {
 
 
 
- // When the user clicks on <span> (x), close the modal
-    abrechen.onclick = function () {
+
+
+
+
+// When the user clicks on <span> (x), close the modal
+abrechen.onclick = function () {
     modal.style.display = "none";
- }
-
-
+    // reset buttons 
+    let dateiAuswahlnode = document.getElementById('dateiAuswahlnode');
+    if (dateiAuswahlnode.parentNode) {
+        dateiAuswahlnode.parentNode.removeChild(dateiAuswahlnode);
+    }
+}
 
 
