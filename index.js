@@ -61,7 +61,7 @@ function dateiSuchen() {
                         document.getElementById('myFrame').src = fileUrl + dateiName[0];
                         document.getElementById('myFrame').style.display = "flex";
                         // document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
-                        document.getElementById('dateiName').innerHTML = dateiName.substring(dateiName.length - 4 , 0);
+                        //document.getElementById('dateiName').innerHTML = dateiName.substring(dateiName.length - 4 , 0);
                     }
                     else
                     {
@@ -74,7 +74,7 @@ function dateiSuchen() {
                             // button
                             let dateiAuswahlBtn = document.createElement('input');
                             dateiAuswahlBtn.type = 'button';
-                            dateiAuswahlBtn.value = dateiNamenArray[element] ;
+                            dateiAuswahlBtn.value = dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) ;
                             dateiAuswahlBtn.className = 'block';
                             dateiAuswahlBtn.id = element.trim().replaceAll(' ', '');
                             docFrag.appendChild(dateiAuswahlBtn);
@@ -88,7 +88,7 @@ function dateiSuchen() {
                              
                         // When the user clicks the button, open the modal 
                         modal.style.display = "block";
-                        document.getElementById('dateienAuswahl').textContent = dateiNamenArray2 + "\n";
+                        //document.getElementById('dateienAuswahl').textContent = dateiNamenArray2 + "\n";
 
                         
 
