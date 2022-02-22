@@ -77,7 +77,7 @@ function dateiSuchen() {
                             // button
                             let dateiAuswahlBtn = document.createElement('input');
                             dateiAuswahlBtn.type = 'button';
-                            dateiAuswahlBtn.value = dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) ;
+                            dateiAuswahlBtn.value = dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + " + " + dateiNamenArray[element][1].trim().replaceAll('\t', '');;
                             dateiAuswahlBtn.className = 'block';
                             dateiAuswahlBtn.id = element.trim().replaceAll(' ', '');
                             docFrag.appendChild(dateiAuswahlBtn);
@@ -91,6 +91,15 @@ function dateiSuchen() {
                              
                         // When the user clicks the button, open the modal 
                         modal.style.display = "block";
+
+                        for(element in dateiNamenArray)
+                        {
+                            if(dateiNamenArray[element][2] == false)
+                            {
+                                alert("Datei Nr. " + dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + 
+                                ` hat einen Fehler in der Benennung. Bitte informieren Sie den Administrator`);
+                            }
+                        }
                         //document.getElementById('dateienAuswahl').textContent = dateiNamenArray2 + "\n";
 
                         

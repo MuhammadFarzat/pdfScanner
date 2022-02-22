@@ -90,8 +90,15 @@
         $document = $parser->parseFile($path."/".$fileName);
         $content  = nl2br($document->getText());
         $posVomBehaelter = strpos($content, "Behälter");
-        $posVomBreak = strpos($content, "<br />", $posVomBehaelter);
-        $behaelter = substr($content, $posVomBehaelter, $posVomBreak - $posVomBehaelter);
+        if($posVomBehaelter !== false)
+        {
+            $posVomBreak = strpos($content, "<br />", $posVomBehaelter);
+            $behaelter = substr($content, $posVomBehaelter, $posVomBreak - $posVomBehaelter);
+        }
+        else
+        {
+            $behaelter = "Behälter: nicht angegeben";
+        }
 
         return $behaelter;
     }
