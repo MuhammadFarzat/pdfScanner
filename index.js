@@ -11,8 +11,15 @@ let docFrag = document.createDocumentFragment();
 
 let dateiAuswahl = document.getElementById("dateiAuswahl");
 
+let fName;
+
+var dateiName;
+
+var dateiNamenArray;
+
 let scannId = document.getElementById('scannID');
 
+const fileUrl = "./Umpackanweisungen/";
 
 //Gives us the requested file
 function dateiSuchen() {
@@ -22,14 +29,14 @@ function dateiSuchen() {
         var artikelNummer = scannId.value;
 
         var data = {};
-        const fileUrl = "./Umpackanweisungen/";
+        
 
         data["artikelNummer"] = artikelNummer;
 
         //Is for the loading logo
 
         data = JSON.parse(JSON.stringify(data));
-        var dateiNamenArray = {};
+        dateiNamenArray = {};
         $.ajax({
             //Sends request to dateisuchen.php to search and return text of the wanted php file
             url: "./php/dateisuchen.php",
@@ -57,10 +64,16 @@ function dateiSuchen() {
                 {
                     if(anzahlElementsImObjekt == 1)
                     {
+                        
                         console.log(anzahlElementsImObjekt);
                         console.log(dateiNamenArray);
-                        let fName = response;
-                        var dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
+                        fName = response;
+                        dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
+                        if(dateiName[2] == false)
+                        {
+                            alert("Datei Nr. " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
+                            ` hat einen Fehler in der Benennung. Bitte informieren Sie den Administrator`);
+                        }
                         document.getElementById('myFrame').src = fileUrl + dateiName[0];
                         document.getElementById('myFrame').style.display = "flex";
                         // document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
@@ -69,17 +82,17 @@ function dateiSuchen() {
                     else
                     {
                         console.log(anzahlElementsImObjekt);
-                        var dateiNamenArray2 = [];
+                   
                         for(element in dateiNamenArray)
                         {
                             console.log(dateiNamenArray[element]);
-                            dateiNamenArray2.push(dateiNamenArray[element] + "\n");
                             // button
                             let dateiAuswahlBtn = document.createElement('input');
                             dateiAuswahlBtn.type = 'button';
                             dateiAuswahlBtn.value = dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + " + " + dateiNamenArray[element][1].trim().replaceAll('\t', '');;
                             dateiAuswahlBtn.className = 'block';
                             dateiAuswahlBtn.id = element.trim().replaceAll(' ', '');
+                            dateiAuswahlBtn.onclick = showSelectedArtikel;
                             docFrag.appendChild(dateiAuswahlBtn);
                         }
                         let div = document.createElement('div');
@@ -119,11 +132,23 @@ function dateiSuchen() {
         });
   }
 
-
-
-
-
-
+function showSelectedArtikel(event)
+{
+    var artikelNummerImButton = event.srcElement.value.substr(0, event.srcElement.value.indexOf('+')-1);
+    for(element in dateiNamenArray)
+    {
+        if(dateiNamenArray[element][0].includes(artikelNummerImButton))
+        {
+            document.getElementById('myFrame').src = fileUrl + dateiNamenArray[element][0];
+            document.getElementById('myFrame').style.display = "flex";
+            modal.style.display = "none";
+            let dateiAuswahlnode = document.getElementById('dateiAuswahlnode');
+            if (dateiAuswahlnode.parentNode) {
+                dateiAuswahlnode.parentNode.removeChild(dateiAuswahlnode);
+            }
+        }
+    }
+}
 
 // When the user clicks on <span> (x), close the modal
 abrechen.onclick = function () {
