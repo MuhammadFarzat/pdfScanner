@@ -1,8 +1,17 @@
+/******************************************************************************************************************************************/
+/******************************************************************************************************************************************/
+/**************************************************** BJA Umpackanweisungen ***************************************************************/
+/****************************************************    Javascript Code    ***************************************************************/
+/****************************************************  erstellt 01.02.2022  ***************************************************************/
+/******************************************************************************************************************************************/
+/******************************************************************************************************************************************/
+
+
 // Get the modal
-let modal = document.getElementById("myModal");
+const modal = document.getElementById("myModal");
     
 // Get the button that opens the modal
-let btn = document.getElementById("myBtn");
+const btn = document.getElementById("myBtn");
 
 // Get the <span> element that closes the modal
 let abrechen = document.getElementsByClassName("close")[0];
@@ -10,6 +19,8 @@ let abrechen = document.getElementsByClassName("close")[0];
 let docFrag = document.createDocumentFragment();
 
 let dateiAuswahl = document.getElementById("dateiAuswahl");
+
+let inputLabel = document.getElementById('inputLabel');
 
 let fName;
 
@@ -20,6 +31,8 @@ var dateiNamenArray;
 let scannId = document.getElementById('scannID');
 
 const fileUrl = "./Umpackanweisungen/";
+
+
 
 //Gives us the requested file
 function dateiSuchen() {
@@ -58,7 +71,7 @@ function dateiSuchen() {
                     document.getElementById('myFrame').src = "";
                     document.getElementById('myFrame').style.display = "none";
                     scannId.placeholder  = "Artikelnummer";
-                    document.getElementById('dateiName').innerHTML = "Keine Dateien gefunden";
+                    inputLabel.textContent = "Keine Dateien gefunden";
                 }
                 else
                 {
@@ -72,18 +85,20 @@ function dateiSuchen() {
                         dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
                         if(dateiName[2] == false)
                         {
-                            alert("Datei Nr. " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
-                            ` hat einen Fehler in der Benennung. Bitte informieren Sie den Administrator`);
+                            $('.popupBox_hover').show();
+                            document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
+                             ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
                         }
-                        document.getElementById('dateiName').innerHTML = "Artikelnummer: " + artikelNummer;
                         document.getElementById('myFrame').src = fileUrl + dateiName[0];
                         document.getElementById('myFrame').style.display = "flex";
-                        // document.getElementById('scannID').placeholder  = dateiName.substring(dateiName.length - 4 , 0);
-                        //document.getElementById('dateiName').innerHTML = dateiName.substring(dateiName.length - 4 , 0);
+                        inputLabel.textContent = "Artikelnummer: " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
+                                                    "  |  " + (dateiName[1].substr(9, dateiName[1].length).trim() ? dateiName[1] : "Behälter nicht angegeben" ) + 
+                                                    "  |  Dateiname: " + dateiName[0] +
+                                                    "" + (dateiName[2] ? "": "  |  stimmt nicht überein");
                     }
                     else
                     {
-                        console.log(anzahlElementsImObjekt);
+                        console.log( 'Anzahl Elements Im Objekt' + anzahlElementsImObjekt);
                    
                         for(element in dateiNamenArray)
                         {
@@ -102,23 +117,22 @@ function dateiSuchen() {
                         div.appendChild(docFrag)
                         dateiAuswahl.appendChild(div);
 
-                        /* start modal */
+                        /**********************************************************/
+                        /********************** Start modal ***********************/
+                        /**********************************************************/
                              
                         // When the user clicks the button, open the modal 
                         modal.style.display = "block";
 
-                        for(element in dateiNamenArray)
+                        /*for(element in dateiNamenArray)
                         {
                             if(dateiNamenArray[element][2] == false)
                             {
-                                alert("Datei Nr. " + dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + 
-                                ` hat einen Fehler in der Benennung. Bitte informieren Sie den Administrator`);
+                                $('.popupBox_hover').show();
+                                document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + 
+                                 ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
                             }
-                        }
-                        //document.getElementById('dateienAuswahl').textContent = dateiNamenArray2 + "\n";
-
-                        
-
+                        }*/
                         
                         // When the user clicks anywhere outside of the modal, close it
                         /*window.onclick = function(event) {
@@ -126,13 +140,21 @@ function dateiSuchen() {
                             modal.style.display = "none";
                             }
                         }*/
-                        /* end modal */
+
+                        /**********************************************************/
+                        /********************** End modal *************************/
+                        /**********************************************************/
                     }
                     
                 }
             }
         });
   }
+
+
+/**********************************************************/
+/******* Start, zeige den ausgewaehlten Artikel  **********/
+/**********************************************************/
 
 function showSelectedArtikel(event)
 {
@@ -148,10 +170,25 @@ function showSelectedArtikel(event)
             if (dateiAuswahlnode.parentNode) {
                 dateiAuswahlnode.parentNode.removeChild(dateiAuswahlnode);
             }
-            document.getElementById('dateiName').innerHTML = "Artikelnummer: " + artikelNummerImButton;
+            inputLabel.textContent = "Artikelnummer: " + artikelNummerImButton  + 
+                                    "  |  " + (dateiNamenArray[element][1].substr(9, dateiNamenArray[element][1].length).trim() ? dateiNamenArray[element][1] : "Behälter nicht angegeben" ) + 
+                                    "  |  Dateiname: " + dateiNamenArray[element][0] +
+                                    "" + (dateiNamenArray[element][2] ? "": "  |  stimmt nicht überein");
+            if(dateiNamenArray[element][2] == false)
+            {
+                $('.popupBox_hover').show();
+                document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + 
+                 ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
+            }
         }
     }
 }
+
+/**********************************************************/
+/******* Ende , zeige den ausgewaehlten Artikel  **********/
+/**********************************************************/
+
+
 
 // When the user clicks on <span> (x), close the modal
 abrechen.onclick = function () {
@@ -164,3 +201,19 @@ abrechen.onclick = function () {
 }
 
 
+
+
+/**********************************************************/
+/*******   **********/
+/**********************************************************/
+$(window).load(function () {
+   /* $(".trigger_popup_fricc").click(function(){
+       $('.popupBox_hover').show();
+    });*/
+   /* $('.popupBox_hover').click(function(){
+        $('.popupBox_hover').hide();
+    });*/
+    $('.popupCloseButton').click(function(){
+        $('.popupBox_hover').hide();
+    });
+});

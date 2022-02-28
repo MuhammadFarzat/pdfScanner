@@ -39,6 +39,15 @@
       <img src="loading.gif">
     </div>
 
+
+<div class="popupBox_hover">
+    <span class="helper"></span>
+    <div>
+        <div class="popupCloseButton">&times;</div>
+        <p id="popupBox_Text">Fehler <br /> popup box!</p>
+    </div>
+</div>
+
     <div class="child"> 
       <h2>Artikellnummer scannen</h2>
 
@@ -52,7 +61,7 @@
       
     <div class="form__group">
       <input type="text" class="form__input" minlength="9" maxlength="12" oninput="dateiSuchen()" id="scannID" placeholder="Artikelnummer" required />
-      <label for="name" class="form__label" id="dateiName">Artikelnummer</label>
+      <label for="name" class="form__label" id="inputLabel"></label>
     </div>
     <!-- <input type="text" oninput="dateiSuchen()" id="scannID" > -->
 
