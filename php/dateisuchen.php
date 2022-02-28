@@ -8,7 +8,62 @@
 
     $parser = new \Smalot\PdfParser\Parser();
 
+    $ftp_server = '10.131.6.113';
+
+    $sftp_user_name = 'fritz_bja_t';
+
+    $sftp_user_pass = 'M|&6iPE4z$';
+
     $path    = '../Umpackanweisungen';
+
+
+
+
+/**********************************************************/
+/**************** Start sftp Verbindung *******************/
+/**********************************************************/
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// SSL-Verbindung aufbauen
+/*$connection = ssh2_connect($ftp_server, 22);
+if (! $connection) {
+    die("Connection failed.");
+    }
+ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass);
+if (! ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass)) {
+    die("Auth failed.");
+    }
+
+$stream = ssh2_exec($connection, 'cd /tst');
+
+stream_set_blocking($stream, true);
+    $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+    $result = stream_get_contents($stream_out);
+    echo $result;
+    echo 'xxxxxxxxxxxxxx';*/
+
+
+/*$connection = ssh2_connect($ftp_server, 22);
+ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass);
+
+$sftp = ssh2_sftp($connection);
+$sftp_fd = intval($sftp);
+
+$handle = opendir("ssh2.sftp://$sftp_fd/./");
+echo "Directory handle: $handle\n";
+echo "Entries:\n";
+while (false != ($entry = readdir($handle))){
+    echo "$entry\n";
+}*/
+
+/**********************************************************/
+/******************* Ende sftp Verbindung *****************/
+/**********************************************************/
+
+
+
+
 
     //is called when we call the "dateiSuchen()" function from the index.js file
     if(isset($_POST['artikelNummer']))
@@ -25,7 +80,7 @@
             //$files is an array of the names of all files in the "dateien" directory
     
             $filesZumSenden = [];
-     
+  
 
             foreach($files as $file)
             {
@@ -34,13 +89,13 @@
                 if(preg_match("/[a-z]/i", substr($artikelNummer, 4, 1))){
                     if(strpos($file, $artikelNummer) !== false)
                     {
-                        if(substr($file, strlen($artikelNummer), 1) == "_")
+                        if(substr($file, strlen($artikelNummer), 1) == "_" || strlen($file) - 4 == strlen($artikelNummer))
                         {
                             
                             $filesZumSenden[$file] = [];
                             array_push($filesZumSenden[$file], $file);
                             array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
-                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file));
+                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
                             break;
                         }
                     
@@ -52,18 +107,20 @@
                     $fileNameMitBuchstabe = substr_replace($file, "0", 4, 1);
                     if(strpos($fileNameMitBuchstabe, $artikelNummer) !== false)
                     {
-                        if(substr($file, strlen($artikelNummer), 1) == "_")
+                        if(substr($file, strlen($artikelNummer), 1) == "_" || strlen($file) - 4 == strlen($artikelNummer))
                         {
                             $filesZumSenden[$file] = [];
                             array_push($filesZumSenden[$file], $file);
                             array_push($filesZumSenden[$file], readDateiInhaltBehaelter($file));
-                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file));
+                            array_push($filesZumSenden[$file], readDateiInhaltArtikel($file, $artikelNummer));
                         }
                     }
                 }
                 
                 
             }
+            
+
             //Wenn Dateien im Array $filesZumSenden sind dann diesen Array senden
             if(count($filesZumSenden) !== 0)
             {
@@ -72,12 +129,12 @@
             //Ansonsten diesen String senden
             else
             {
-                echo json_encode("Keine Dateien gefunden");
+                echo json_encode("Keine Dateien gefunden, zum Senden");
             }
         }
         else
         {
-            echo json_encode("Keine Dateien gefunden");
+            echo json_encode("Keine Dateien gefunden < 9");
         }
 
     }
@@ -103,12 +160,13 @@
         return $behaelter;
     }
 
-    function readDateiInhaltArtikel($fileName)
+    function readDateiInhaltArtikel($fileName, $artikelNummer)
     {
         global $parser;
         global $path;
 
-        $artikel = substr($fileName, 0, strpos($fileName, '_'));
+        // auch wenn Dateiname beinhaltet kein "_" , zeige 
+        $artikel = (substr($fileName, 0, strpos($fileName, '_')) ? substr($fileName, 0, strpos($fileName, '_')) : $artikelNummer );
 
         $document = $parser->parseFile($path."/".$fileName);
         $content  = preg_replace('/\s+/', '', nl2br($document->getText()));
