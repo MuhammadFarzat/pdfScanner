@@ -16,8 +16,7 @@
 
     $path    = '../Umpackanweisungen';
 
-
-
+    $fehlerMeldungenObject;
 
 /**********************************************************/
 /**************** Start sftp Verbindung *******************/
@@ -57,9 +56,25 @@ while (false != ($entry = readdir($handle))){
     echo "$entry\n";
 }*/
 
+
+//Use this
+
+
+/*$connection = ssh2_connect($ftp_server, 22);
+if (!$connection) {
+    $fehlerMeldungenObject["connectionError"] = "Verbindung mit dem Server " . $ftp_server . " fehlgeschlagen";
+    $fehlerMeldungenObject["serverName"] = $ftp_server;
+    $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
+}
+else if (! ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass)) {
+    $fehlerMeldungenObject["anmeldungError"] = "Benutzer " . $sftp_user_name . " konnte nicht im Server " . $ftp_server . " einloggen";
+    $fehlerMeldungenObject["serverName"] = $ftp_server;
+    $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
+}*/
 /**********************************************************/
 /******************* Ende sftp Verbindung *****************/
 /**********************************************************/
+
 
 
 
@@ -129,12 +144,14 @@ while (false != ($entry = readdir($handle))){
             //Ansonsten diesen String senden
             else
             {
-                echo json_encode("Keine Dateien gefunden, zum Senden");
+                $fehlerMeldungenObject["dateiSucheError"] = "Keine Dateien gefunden, zum Senden";
+                echo json_encode($fehlerMeldungenObject);
             }
         }
         else
         {
-            echo json_encode("Keine Dateien gefunden < 9");
+            $fehlerMeldungenObject["dateiSucheError"] = "Keine Dateien gefunden < 9";
+            echo json_encode($fehlerMeldungenObject);
         }
 
     }
@@ -184,7 +201,7 @@ while (false != ($entry = readdir($handle))){
                 $artikelNummerExistiert = false;
             }
         }
-        else
+        /*else
         {
             $erste4StellenVonArtikel = substr($artikel, 0, 4);
 
@@ -202,7 +219,7 @@ while (false != ($entry = readdir($handle))){
             {
                 $artikelNummerExistiert = false;
             }
-        }
+        }*/
         
         return $artikelNummerExistiert;
     }

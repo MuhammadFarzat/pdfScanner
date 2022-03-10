@@ -58,7 +58,19 @@ function dateiSuchen() {
             success: function(response)
             {
                 dateiNamenArray = JSON.parse(response);
-                var anzahlElementsImObjekt = 0;
+                if(dateiNamenArray["connectionError"] != null)
+                {
+                    $('.popupBox_hover').show();
+                    document.getElementById('popupBox_Text').textContent = dateiNamenArray["connectionError"];
+                }
+                else if(dateiNamenArray["anmeldungError"] != null)
+                {
+                    $('.popupBox_hover').show();
+                    document.getElementById('popupBox_Text').textContent = dateiNamenArray["anmeldungError"];
+                }
+                else
+                {
+                    var anzahlElementsImObjekt = 0;
                 for(element in dateiNamenArray)
                 {
                     anzahlElementsImObjekt++;
@@ -98,7 +110,6 @@ function dateiSuchen() {
                     }
                     else
                     {
-                        console.log( 'Anzahl Elements Im Objekt' + anzahlElementsImObjekt);
                    
                         for(element in dateiNamenArray)
                         {
@@ -147,6 +158,8 @@ function dateiSuchen() {
                     }
                     
                 }
+                }
+                
             }
         });
   }
@@ -158,12 +171,15 @@ function dateiSuchen() {
 
 function showSelectedArtikel(event)
 {
+
     var artikelNummerImButton = event.srcElement.value.substr(0, event.srcElement.value.indexOf('+')-1);
-    for(element in dateiNamenArray)
+    var dateiName = event.srcElement.id;
+    
+    for(keyInArray in dateiNamenArray)
     {
-        if(dateiNamenArray[element][0].includes(artikelNummerImButton))
+        if(keyInArray == dateiName)
         {
-            document.getElementById('myFrame').src = fileUrl + dateiNamenArray[element][0];
+            document.getElementById('myFrame').src = fileUrl + dateiNamenArray[keyInArray][0];
             document.getElementById('myFrame').style.display = "flex";
             modal.style.display = "none";
             let dateiAuswahlnode = document.getElementById('dateiAuswahlnode');
@@ -171,13 +187,13 @@ function showSelectedArtikel(event)
                 dateiAuswahlnode.parentNode.removeChild(dateiAuswahlnode);
             }
             inputLabel.textContent = "Artikelnummer: " + artikelNummerImButton  + 
-                                    "  |  " + (dateiNamenArray[element][1].substr(9, dateiNamenArray[element][1].length).trim() ? dateiNamenArray[element][1] : "Behälter nicht angegeben" ) + 
-                                    "  |  Dateiname: " + dateiNamenArray[element][0] +
-                                    "" + (dateiNamenArray[element][2] ? "": "  |  stimmt nicht überein");
-            if(dateiNamenArray[element][2] == false)
+                                    "  |  " + (dateiNamenArray[keyInArray][1].substr(9, dateiNamenArray[keyInArray][1].length).trim() ? dateiNamenArray[keyInArray][1] : "Behälter nicht angegeben" ) + 
+                                    "  |  Dateiname: " + dateiNamenArray[keyInArray][0] +
+                                    "" + (dateiNamenArray[keyInArray][2] ? "": "  |  stimmt nicht überein");
+            if(dateiNamenArray[keyInArray][2] == false)
             {
                 $('.popupBox_hover').show();
-                document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + 
+                document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray[keyInArray][0].substr(0, dateiNamenArray[keyInArray][0].indexOf('_')) + 
                  ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
             }
         }
