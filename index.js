@@ -110,7 +110,7 @@ function dateiSuchen() {
                     }
                     else
                     {
-                   
+                        var anzahlItems = 0;
                         for(element in dateiNamenArray)
                         {
                             console.log(dateiNamenArray[element]);
@@ -119,9 +119,10 @@ function dateiSuchen() {
                             dateiAuswahlBtn.type = 'button';
                             dateiAuswahlBtn.value = dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + " + " + dateiNamenArray[element][1].trim().replaceAll('\t', '');;
                             dateiAuswahlBtn.className = 'block';
-                            dateiAuswahlBtn.id = element.trim().replaceAll(' ', '');
+                            dateiAuswahlBtn.id = anzahlItems/*element.trim().replaceAll(' ', '')*/;
                             dateiAuswahlBtn.onclick = showSelectedArtikel;
                             docFrag.appendChild(dateiAuswahlBtn);
+                            anzahlItems++;
                         }
                         let div = document.createElement('div');
                         div.id = 'dateiAuswahlnode';
@@ -173,11 +174,12 @@ function showSelectedArtikel(event)
 {
 
     var artikelNummerImButton = event.srcElement.value.substr(0, event.srcElement.value.indexOf('+')-1);
-    var dateiName = event.srcElement.id;
+    var itemNumber = event.srcElement.id;
+    var anzahlItems = 0;
     
     for(keyInArray in dateiNamenArray)
     {
-        if(keyInArray == dateiName)
+        if(itemNumber == anzahlItems)
         {
             document.getElementById('myFrame').src = fileUrl + dateiNamenArray[keyInArray][0];
             document.getElementById('myFrame').style.display = "flex";
@@ -196,7 +198,9 @@ function showSelectedArtikel(event)
                 document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray[keyInArray][0].substr(0, dateiNamenArray[keyInArray][0].indexOf('_')) + 
                  ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
             }
+            break;
         }
+        anzahlItems++;
     }
 }
 
