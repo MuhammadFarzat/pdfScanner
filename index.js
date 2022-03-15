@@ -181,6 +181,7 @@ function showSelectedArtikel(event)
     {
         if(itemNumber == anzahlItems)
         {
+            console.log(fileUrl + dateiNamenArray[keyInArray][0]);
             document.getElementById('myFrame').src = fileUrl + dateiNamenArray[keyInArray][0];
             document.getElementById('myFrame').style.display = "flex";
             modal.style.display = "none";
