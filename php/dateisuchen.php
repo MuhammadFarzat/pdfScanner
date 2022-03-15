@@ -14,7 +14,7 @@
 
     $sftp_user_pass = 'M|&6iPE4z$';
 
-    $path    = '../Umpackanweisungen';
+   //$path    = '../Umpackanweisungen';
 
     $fehlerMeldungenObject;
 
@@ -24,52 +24,32 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// SSL-Verbindung aufbauen
-/*$connection = ssh2_connect($ftp_server, 22);
-if (! $connection) {
-    die("Connection failed.");
-    }
-ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass);
-if (! ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass)) {
-    die("Auth failed.");
-    }
-
-$stream = ssh2_exec($connection, 'cd /tst');
-
-stream_set_blocking($stream, true);
-    $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
-    $result = stream_get_contents($stream_out);
-    echo $result;
-    echo 'xxxxxxxxxxxxxx';*/
-
-
-/*$connection = ssh2_connect($ftp_server, 22);
-ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass);
-
-$sftp = ssh2_sftp($connection);
-$sftp_fd = intval($sftp);
-
-$handle = opendir("ssh2.sftp://$sftp_fd/./");
-echo "Directory handle: $handle\n";
-echo "Entries:\n";
-while (false != ($entry = readdir($handle))){
-    echo "$entry\n";
-}*/
-
 
 //Use this
 
 
-/*$connection = ssh2_connect($ftp_server, 22);
-if (!$connection) {
+$connection = ssh2_connect($ftp_server, 22);
+$auth = ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass);
+
+if ( !$connection) {
     $fehlerMeldungenObject["connectionError"] = "Verbindung mit dem Server " . $ftp_server . " fehlgeschlagen";
     $fehlerMeldungenObject["serverName"] = $ftp_server;
     $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
 }
-else if (! ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass)) {
+else if (! $auth) {
     $fehlerMeldungenObject["anmeldungError"] = "Benutzer " . $sftp_user_name . " konnte nicht im Server " . $ftp_server . " einloggen";
     $fehlerMeldungenObject["serverName"] = $ftp_server;
     $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
+}
+
+$sftp = ssh2_sftp($connection);
+//$realpath = ssh2_sftp_realpath($sftp, '/home/fritz_bja_t/Umpackanweisungen');
+//$stream = fopen('ssh2.sftp://'.$realpath, 'r');
+$remote_dir = '/home/fritz_bja_t/Umpackanweisungen';
+$path = "ssh2.sftp://{$sftp}{$remote_dir}"; 
+//$handle = opendir($dir);
+/*while (false != ($entry = readdir($handle))){
+    echo "$entry\n";
 }*/
 /**********************************************************/
 /******************* Ende sftp Verbindung *****************/
@@ -182,7 +162,7 @@ else if (! ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass)) {
         global $parser;
         global $path;
 
-        // auch wenn Dateiname beinhaltet kein "_" , zeige 
+        // auch wenn Dateiname beinhaltet kein "_" , zeige sie 
         $artikel = (substr($fileName, 0, strpos($fileName, '_')) ? substr($fileName, 0, strpos($fileName, '_')) : $artikelNummer );
 
         $document = $parser->parseFile($path."/".$fileName);
@@ -201,25 +181,6 @@ else if (! ssh2_auth_password($connection, $sftp_user_name, $sftp_user_pass)) {
                 $artikelNummerExistiert = false;
             }
         }
-        /*else
-        {
-            $erste4StellenVonArtikel = substr($artikel, 0, 4);
-
-            $anfangDerArtikelnummerInDerDatei = strpos($erste200Stellen, $erste4StellenVonArtikel);
-
-            $artikelnummerInDerDateiMitNull = substr($erste200Stellen, $anfangDerArtikelnummerInDerDatei, strlen($artikel));
-
-            $artikelnummerInDerDateiMitNull = substr_replace($artikelnummerInDerDateiMitNull, "0", 4, 1);
-          
-            if(strpos($artikelnummerInDerDateiMitNull, $artikel) !== false)
-            {
-                $artikelNummerExistiert = true;
-            }
-            else
-            {
-                $artikelNummerExistiert = false;
-            }
-        }*/
         
         return $artikelNummerExistiert;
     }
