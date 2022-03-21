@@ -10,9 +10,9 @@
 
     $ftp_server = '10.131.6.113';
 
-    $sftp_user_name = 'fritz_bja_t';
+    $sftp_user_name = 'BJAT';
 
-    $sftp_user_pass = 'M|&6iPE4z$';
+    $sftp_user_pass = 'BJA2022';
 
    //$path    = '../Umpackanweisungen';
 
@@ -29,15 +29,15 @@ error_reporting(E_ALL);
 
 
 $connection = ssh2_connect($ftp_server, 22);
-$auth = ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass);
+// $auth = ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass);
 
 if ( !$connection) {
     $fehlerMeldungenObject["connectionError"] = "Verbindung mit dem Server " . $ftp_server . " fehlgeschlagen";
     $fehlerMeldungenObject["serverName"] = $ftp_server;
     $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
 }
-else if (! $auth) {
-    $fehlerMeldungenObject["anmeldungError"] = "Benutzer " . $sftp_user_name . " konnte nicht im Server " . $ftp_server . " einloggen";
+else if (! ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass)) {
+    $fehlerMeldungenObject["anmeldungError"] = "Benutzer '" . $sftp_user_name . "' konnte nicht im Server " . $ftp_server . " einloggen, bitte prüfen Sie den Benutzername oder das Kennwort '". $sftp_user_pass."'";
     $fehlerMeldungenObject["serverName"] = $ftp_server;
     $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
 }
@@ -45,18 +45,35 @@ else if (! $auth) {
 $sftp = ssh2_sftp($connection);
 //$realpath = ssh2_sftp_realpath($sftp, '/home/fritz_bja_t/Umpackanweisungen');
 //$stream = fopen('ssh2.sftp://'.$realpath, 'r');
-$remote_dir = '/home/fritz_bja_t/Umpackanweisungen';
+$remote_dir = '/home/BJAT/Umpackanweisungen';
 $path = "ssh2.sftp://{$sftp}{$remote_dir}"; 
-//$handle = opendir($dir);
-/*while (false != ($entry = readdir($handle))){
+/*$handle = opendir("ssh2.sftp://{$sftp}".'/home//Umpackanweisungen' );
+while (false != ($entry = readdir($handle))){
     echo "$entry\n";
-}*/
+}**/
 /**********************************************************/
 /******************* Ende sftp Verbindung *****************/
 /**********************************************************/
+ 
+// Store the file name into variable
+/*$file = $path.'/701700205_AAWKAT-2145.pdf';
+$filename = $path.'/701700205_AAWKAT-2145.pdf';
+  
+// Header content type
+header('Content-type: application/pdf');
 
+header('Content-Disposition: inline; filename="' . $filename . '"');
+  
+header('Content-Transfer-Encoding: binary');
+  
+header('Accept-Ranges: bytes');
+  
+// Read the file
+@readfile($file);
+*/
 
-
+//$lesen = readfile($path.'/701700205_AAWKAT-2145.pdf');
+//echo "<iframe src=\"data:application/pdf;base64,$lesen\" type=\"text/html\" width=\"100%\" style=\"height:100%\"></iframe>";
 
 
 
@@ -75,7 +92,6 @@ $path = "ssh2.sftp://{$sftp}{$remote_dir}";
             //$files is an array of the names of all files in the "dateien" directory
     
             $filesZumSenden = [];
-  
 
             foreach($files as $file)
             {
