@@ -95,12 +95,15 @@ header('Accept-Ranges: bytes');
 
             foreach($files as $file)
             {
-               
-                if(strpos($file, $artikelNummer) !== false)
+                $vergleichName = substr($file, 0, strpos($file, '-', strpos($file, '_')));
+             
+                if($vergleichName == $artikelNummer)
                 {
                     /*if(substr($file, strlen($artikelNummer), 1) == "_" || strlen($file) - 4 == strlen($artikelNummer))
                     {*/
                         $fileContents =  file_get_contents("../Umpackanweisungen/".$file);
+                        $response['behaelter'] = readDateiInhaltBehaelter($file);
+                        $response['dateiNamePasst'] = readDateiInhaltArtikel($file, $artikelNummer);
                         $response['datei'] = base64_encode($fileContents);
                         break;
                     //}
@@ -140,7 +143,7 @@ header('Accept-Ranges: bytes');
                 
                 
             }
-            if($response['datei'] == null)
+            if(!isset($response['datei']) /*$response['datei'] == null*/ )
             {
                 $response['meldung'] = "Keine Dateien zum Senden gefunden";
             }
@@ -189,28 +192,37 @@ header('Accept-Ranges: bytes');
     {
         global $parser;
         global $path;
+        $nameIstRichtig = false;
 
         // auch wenn Dateiname beinhaltet kein "_" , zeige sie 
-        $artikel = (substr($fileName, 0, strpos($fileName, '_')) ? substr($fileName, 0, strpos($fileName, '_')) : $artikelNummer );
+        $artikelInDateiName = (substr($fileName, 0, strpos($fileName, '_')));
 
+        
+
+        $behaelterInDateiName = substr($fileName, strpos($fileName, "_")+1);
+        $behaelterInDateiName = substr($behaelterInDateiName, 0, strpos($behaelterInDateiName, "-"));
+    
         $document = $parser->parseFile($path."/".$fileName);
         $content  = preg_replace('/\s+/', '', nl2br($document->getText()));
         $erste200Stellen = substr($content, 0, 200);
      
-       
         
-        $artikelNummerExistiert = (strpos($erste200Stellen, $artikel) !== false) ? true : false;
+        
+        $artikelNummerExistiert = (strpos($erste200Stellen, $artikelInDateiName) !== false) ? true : false;
 
-        if($artikelNummerExistiert)
+        $behaelterExistiert = (strpos(readDateiInhaltBehaelter($fileName), $behaelterInDateiName) !== false) ? true : false;
+
+        if($artikelNummerExistiert && $behaelterExistiert)
         {
-            $posArtikelNummer = strpos($erste200Stellen, $artikel);
-            if(substr($erste200Stellen, $posArtikelNummer+strlen($artikel), 1) == '-')
+            $nameIstRichtig = true;
+            /*$posArtikelNummer = strpos($erste200Stellen, $artikelInDateiName);
+            if(substr($erste200Stellen, $posArtikelNummer+strlen($artikelInDateiName), 1) == '-')
             {
                 $artikelNummerExistiert = false;
-            }
+            }*/
         }
         
-        return $artikelNummerExistiert;
+        return $nameIstRichtig;
     }
     
    

@@ -75,6 +75,8 @@ function dateiSuchen() {
                 }
                 else if(dateiNamenArray['datei'] != null)
                 {
+                    console.log(dateiNamenArray['behaelter'].replace('\t',''));
+                    console.log(dateiNamenArray['dateiNamePasst']);
                     document.getElementById('myFrame').src = "data:application/pdf;base64,"+dateiNamenArray['datei'];
                     document.getElementById('myFrame').style.display = "flex";
                 }
