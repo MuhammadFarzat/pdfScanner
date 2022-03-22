@@ -30,7 +30,7 @@ var dateiNamenArray;
 
 let scannId = document.getElementById('scannID');
 
-const fileUrl = "./Umpackanweisungen/";
+const fileUrl = "data:application/pdf;base64,";
 
 
 
@@ -59,9 +59,6 @@ function dateiSuchen() {
             {
                 console.log("response: ");
                 console.log(response);
-                /*document.getElementById('myFrame').type = "application/x-google-chrome-pdf";
-                document.getElementById('myFrame').src = "data:application/pdf;base64,"+response;
-                document.getElementById('myFrame').style.display = "flex";*/
                 dateiNamenArray = JSON.parse(response);
                 if(dateiNamenArray["connectionError"] != null)
                 {
@@ -76,101 +73,38 @@ function dateiSuchen() {
                 else if(dateiNamenArray['datei'] != null)
                 {
                     console.log(dateiNamenArray['behaelter'].replace('\t',''));
-                    console.log(dateiNamenArray['dateiNamePasst']);
-                    document.getElementById('myFrame').src = "data:application/pdf;base64,"+dateiNamenArray['datei'];
-                    document.getElementById('myFrame').style.display = "flex";
-                }
-                else
-                {
-                    var anzahlElementsImObjekt = 0;
-                for(element in dateiNamenArray)
-                {
-                    anzahlElementsImObjekt++;
-                }
+                    
+                    inputLabel.textContent = "Artikelnummer: " + dateiNamenArray['dateiName'].substr(0, dateiNamenArray['dateiName'].indexOf('_')) + 
+                                                    "  |  " + (dateiNamenArray['behaelter'].substr(9, dateiNamenArray['behaelter'].length).trim() ? dateiNamenArray['behaelter'] : "Behälter nicht angegeben" ) + 
+                                                    "  |  Dateiname: " + dateiNamenArray['dateiName'] +
+                                                    (dateiNamenArray['behaelterNameIstRichtig'] ? "": "  | Behälter stimmt nicht überein") +
+                                                    (dateiNamenArray['dateiNameIstRichtig'] ? "": "  | Dateiname stimmt nicht überein");
 
-                //We are interested for now only in the else statement, which gives us the text
-                if(response.includes("Keine"))
+                    if (! dateiNamenArray['dateiNameIstRichtig']) {
+                        $('.popupBox_hover').show();
+                        document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray['dateiName'].substr(0, dateiNamenArray['dateiName'].indexOf('_')) + 
+                                              ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
+                    } else if (! dateiNamenArray['behaelterNameIstRichtig'] ) {
+                        $('.popupBox_hover').show();
+                        document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray['dateiName'].substr(0, dateiNamenArray['dateiName'].indexOf('_')) + 
+                                              " hat einen Fehler in der Benennung des Behälters (" + dateiNamenArray['behaelter'] + "). Bitte informieren Sie den Leitstand";
+                    } else {
+                        document.getElementById('myFrame').src = fileUrl + dateiNamenArray['datei'];
+                        document.getElementById('myFrame').style.display = "flex";
+                    }
+                    
+                }
+                else if (dateiNamenArray["meldung"] !== null )
                 {
-                    console.log(response);
                     document.getElementById('myFrame').src = "";
                     document.getElementById('myFrame').style.display = "none";
                     scannId.placeholder  = "Artikelnummer";
-                    inputLabel.textContent = "Keine Dateien gefunden";
-                }
-                else
+                    inputLabel.textContent = "Keine Dateien gefunden";                
+                } 
+                else 
                 {
-                    
-                    if(anzahlElementsImObjekt == 1)
-                    {
-                        
-                        console.log(anzahlElementsImObjekt);
-                        console.log(dateiNamenArray);
-                        fName = response;
-                        dateiName = dateiNamenArray[Object.keys(dateiNamenArray)[0]];
-                        if(dateiName[2] == false)
-                        {
-                            $('.popupBox_hover').show();
-                            document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
-                             ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
-                        }
-                        document.getElementById('myFrame').src = fileUrl + dateiName[0];
-                        document.getElementById('myFrame').style.display = "flex";
-                        inputLabel.textContent = "Artikelnummer: " + dateiName[0].substr(0, dateiName[0].indexOf('_')) + 
-                                                    "  |  " + (dateiName[1].substr(9, dateiName[1].length).trim() ? dateiName[1] : "Behälter nicht angegeben" ) + 
-                                                    "  |  Dateiname: " + dateiName[0] +
-                                                    "" + (dateiName[2] ? "": "  |  stimmt nicht überein");
-                    }
-                    else
-                    {
-                        var anzahlItems = 0;
-                        for(element in dateiNamenArray)
-                        {
-                            console.log(dateiNamenArray[element]);
-                            // button
-                            let dateiAuswahlBtn = document.createElement('input');
-                            dateiAuswahlBtn.type = 'button';
-                            dateiAuswahlBtn.value = dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + " + " + dateiNamenArray[element][1].trim().replaceAll('\t', '');;
-                            dateiAuswahlBtn.className = 'block';
-                            dateiAuswahlBtn.id = anzahlItems/*element.trim().replaceAll(' ', '')*/;
-                            dateiAuswahlBtn.onclick = showSelectedArtikel;
-                            docFrag.appendChild(dateiAuswahlBtn);
-                            anzahlItems++;
-                        }
-                        let div = document.createElement('div');
-                        div.id = 'dateiAuswahlnode';
-                        div.appendChild(docFrag)
-                        dateiAuswahl.appendChild(div);
-
-                        /**********************************************************/
-                        /********************** Start modal ***********************/
-                        /**********************************************************/
-                             
-                        // When the user clicks the button, open the modal 
-                        modal.style.display = "block";
-
-                        /*for(element in dateiNamenArray)
-                        {
-                            if(dateiNamenArray[element][2] == false)
-                            {
-                                $('.popupBox_hover').show();
-                                document.getElementById('popupBox_Text').textContent = "Datei Nr. " + dateiNamenArray[element][0].substr(0, dateiNamenArray[element][0].indexOf('_')) + 
-                                 ` hat einen Fehler in der Benennung. Bitte informieren Sie den Leitstand`;
-                            }
-                        }*/
-                        
-                        // When the user clicks anywhere outside of the modal, close it
-                        /*window.onclick = function(event) {
-                            if (event.target == modal) {
-                            modal.style.display = "none";
-                            }
-                        }*/
-
-                        /**********************************************************/
-                        /********************** End modal *************************/
-                        /**********************************************************/
-                    }
-                    
-                }
+                    $('.popupBox_hover').show();
+                    document.getElementById('popupBox_Text').textContent = "Es ist ein Fehler aufgetretet !";
                 }
                 
             }
@@ -182,7 +116,7 @@ function dateiSuchen() {
 /******* Start, zeige den ausgewaehlten Artikel  **********/
 /**********************************************************/
 
-function showSelectedArtikel(event)
+/*function showSelectedArtikel(event)
 {
 
     var artikelNummerImButton = event.srcElement.value.substr(0, event.srcElement.value.indexOf('+')-1);
@@ -215,7 +149,7 @@ function showSelectedArtikel(event)
         }
         anzahlItems++;
     }
-}
+}*/
 
 /**********************************************************/
 /******* Ende , zeige den ausgewaehlten Artikel  **********/
