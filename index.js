@@ -57,6 +57,11 @@ function dateiSuchen() {
             data: data,
             success: function(response)
             {
+                console.log("response: ");
+                console.log(response);
+                /*document.getElementById('myFrame').type = "application/x-google-chrome-pdf";
+                document.getElementById('myFrame').src = "data:application/pdf;base64,"+response;
+                document.getElementById('myFrame').style.display = "flex";*/
                 dateiNamenArray = JSON.parse(response);
                 if(dateiNamenArray["connectionError"] != null)
                 {
@@ -67,6 +72,11 @@ function dateiSuchen() {
                 {
                     $('.popupBox_hover').show();
                     document.getElementById('popupBox_Text').textContent = dateiNamenArray["anmeldungError"];
+                }
+                else if(dateiNamenArray['datei'] != null)
+                {
+                    document.getElementById('myFrame').src = "data:application/pdf;base64,"+dateiNamenArray['datei'];
+                    document.getElementById('myFrame').style.display = "flex";
                 }
                 else
                 {
