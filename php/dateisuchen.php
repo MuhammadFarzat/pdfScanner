@@ -14,39 +14,37 @@
 
     $sftp_user_pass = 'BJA2022';
 
-   //$path    = '../Umpackanweisungen';
-
-    $fehlerMeldungenObject;
+    $response = [];
 
 /**********************************************************/
 /**************** Start sftp Verbindung *******************/
 /**********************************************************/
-ini_set('display_errors', 1);
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 
 //Use this
 
 
-//$connection = ssh2_connect($ftp_server, 22);
+$connection = ssh2_connect($ftp_server, 22);
 // $auth = ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass);
 
-/*if ( !$connection) {
-    $fehlerMeldungenObject["connectionError"] = "Verbindung mit dem Server " . $ftp_server . " fehlgeschlagen";
-    $fehlerMeldungenObject["serverName"] = $ftp_server;
-    $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
+if ( !$connection) {
+    $response["connectionError"] = "Verbindung mit dem Server " . $ftp_server . " fehlgeschlagen";
+    $response["serverName"] = $ftp_server;
+    $response["benutzername"] = $sftp_user_name;
 }
 else if (! ssh2_auth_password($connection,  $sftp_user_name,  $sftp_user_pass)) {
-    $fehlerMeldungenObject["anmeldungError"] = "Benutzer '" . $sftp_user_name . "' konnte nicht im Server " . $ftp_server . " einloggen, bitte prüfen Sie den Benutzername oder das Kennwort '". $sftp_user_pass."'";
-    $fehlerMeldungenObject["serverName"] = $ftp_server;
-    $fehlerMeldungenObject["benutzername"] = $sftp_user_name;
-}*/
-$path = "../Umpackanweisungen";
-//$sftp = ssh2_sftp($connection);
+    $response["anmeldungError"] = "Benutzer '" . $sftp_user_name . "' konnte nicht im Server " . $ftp_server . " einloggen, bitte prüfen Sie den Benutzername oder das Kennwort '". $sftp_user_pass."'";
+    $response["serverName"] = $ftp_server;
+    $response["benutzername"] = $sftp_user_name;
+}
+
+$sftp = ssh2_sftp($connection);
 //$realpath = ssh2_sftp_realpath($sftp, '/home/fritz_bja_t/Umpackanweisungen');
 //$stream = fopen('ssh2.sftp://'.$realpath, 'r');
-//$remote_dir = '/home/BJAT/Umpackanweisungen';
-//$path = "ssh2.sftp://{$sftp}{$remote_dir}"; 
+$remote_dir = '/home/BJAT/Umpackanweisungen';
+$path = "ssh2.sftp://{$sftp}{$remote_dir}"; 
 /*$handle = opendir("ssh2.sftp://{$sftp}".'/home//Umpackanweisungen' );
 while (false != ($entry = readdir($handle))){
     echo "$entry\n";
@@ -55,28 +53,9 @@ while (false != ($entry = readdir($handle))){
 /******************* Ende sftp Verbindung *****************/
 /**********************************************************/
  
-// Store the file name into variable
-/*$file = $path.'/701700205_AAWKAT-2145.pdf';
-$filename = $path.'/701700205_AAWKAT-2145.pdf';
-  
-// Header content type
-header('Content-type: application/pdf');
-
-header('Content-Disposition: inline; filename="' . $filename . '"');
-  
-header('Content-Transfer-Encoding: binary');
-  
-header('Accept-Ranges: bytes');
-  
-// Read the file
-@readfile($file);
-*/
-
-//$lesen = readfile($path.'/701700205_AAWKAT-2145.pdf');
-//echo "<iframe src=\"data:application/pdf;base64,$lesen\" type=\"text/html\" width=\"100%\" style=\"height:100%\"></iframe>";
 
 
-    $response = [];
+    
     //is called when we call the "dateiSuchen()" function from the index.js file
     if(isset($_POST['artikelNummer']))
     {
@@ -101,9 +80,10 @@ header('Accept-Ranges: bytes');
                 {
                     /*if(substr($file, strlen($artikelNummer), 1) == "_" || strlen($file) - 4 == strlen($artikelNummer))
                     {*/
-                        $fileContents =  file_get_contents("../Umpackanweisungen/".$file);
+                        $fileContents =  file_get_contents($path."/".$file);
                         $response['behaelter'] = readDateiInhaltBehaelter($file);
-                        $response['dateiNamePasst'] = readDateiInhaltArtikel($file, $artikelNummer);
+                        $response['dateiName'] = $file;
+                        readDateiInhaltArtikel($file, $artikelNummer);
                         $response['datei'] = base64_encode($fileContents);
                         break;
                     //}
@@ -143,7 +123,7 @@ header('Accept-Ranges: bytes');
                 
                 
             }
-            if(!isset($response['datei']) /*$response['datei'] == null*/ )
+            if(!isset($response['datei'])) /*$response['datei'] == null*/ 
             {
                 $response['meldung'] = "Keine Dateien zum Senden gefunden";
             }
@@ -156,8 +136,8 @@ header('Accept-Ranges: bytes');
             //Ansonsten diesen String senden
             else
             {
-                $fehlerMeldungenObject["dateiSucheError"] = "Keine Dateien gefunden, zum Senden";
-                echo json_encode($fehlerMeldungenObject);
+                $response["dateiSucheError"] = "Keine Dateien gefunden, zum Senden";
+                echo json_encode($response);
             }
         */}
         else
@@ -192,12 +172,12 @@ header('Accept-Ranges: bytes');
     {
         global $parser;
         global $path;
-        $nameIstRichtig = false;
+        global $response;
+        $response['dateiNameIstRichtig'] = false;
+        $response['behaelterNameIstRichtig'] = false;
 
-        // auch wenn Dateiname beinhaltet kein "_" , zeige sie 
+        // wenn Dateiname beinhaltet kein "_" , wird nicht angezeigt 
         $artikelInDateiName = (substr($fileName, 0, strpos($fileName, '_')));
-
-        
 
         $behaelterInDateiName = substr($fileName, strpos($fileName, "_")+1);
         $behaelterInDateiName = substr($behaelterInDateiName, 0, strpos($behaelterInDateiName, "-"));
@@ -212,17 +192,16 @@ header('Accept-Ranges: bytes');
 
         $behaelterExistiert = (strpos(readDateiInhaltBehaelter($fileName), $behaelterInDateiName) !== false) ? true : false;
 
-        if($artikelNummerExistiert && $behaelterExistiert)
+        if($artikelNummerExistiert)
         {
-            $nameIstRichtig = true;
-            /*$posArtikelNummer = strpos($erste200Stellen, $artikelInDateiName);
-            if(substr($erste200Stellen, $posArtikelNummer+strlen($artikelInDateiName), 1) == '-')
-            {
-                $artikelNummerExistiert = false;
-            }*/
+            $response['dateiNameIstRichtig']  = true;
+        }
+
+        if($behaelterExistiert)
+        {
+            $response['behaelterNameIstRichtig']  = true;
         }
         
-        return $nameIstRichtig;
     }
     
    
