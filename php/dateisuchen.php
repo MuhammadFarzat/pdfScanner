@@ -8,11 +8,11 @@
 
     $parser = new \Smalot\PdfParser\Parser();
 
-    $ftp_server = '10.131.6.113';
+    $ftp_server = 'xxxxxxxxxx';
 
-    $sftp_user_name = 'BJAT';
+    $sftp_user_name = 'xxxx';
 
-    $sftp_user_pass = 'BJA2022';
+    $sftp_user_pass = 'xxxx';
 
     $response = [];
 
